@@ -77,5 +77,39 @@ namespace Algo
                 arr[heap.Size() - 1] = heap.PopMax();
             }
         }
+        
+        public static void MergeSort(T[] arr, int left, int right)
+        {
+            if (left >= right)
+                return;
+            
+            int mid = left + (right - left) / 2;
+            MergeSort(arr, left, mid);
+            MergeSort(arr, (mid + 1), right);
+
+            Merge(arr, left, mid, right);
+            
+        }
+
+        private static void Merge(T[] arr, int left, int mid, int right)
+        {
+            T[] newArr = new T[right - left + 1];
+            int i = left, j = mid + 1;
+            while(i <= mid && j <= right)
+            {
+                if (arr[i].CompareTo(arr[j]) < 0)
+                    newArr[i - left + j - (mid + 1)] = arr[i++];
+                else
+                    newArr[i - left + j - (mid + 1)] = arr[j++];
+            }
+            if (i <= mid)
+                for (; i <= mid; ++i)
+                    newArr[i - left + j - (mid + 1)] = arr[i];
+            else
+                for (; j <= right; ++j)
+                    newArr[i - left + j - (mid + 1)] = arr[j];
+            for (i = left, j = 0; i <= right; ++i, ++j)
+                arr[i] = newArr[j];
+        }
     }
 }
