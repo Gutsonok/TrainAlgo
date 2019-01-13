@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Algo
 {
-    public static class SortAlgo<T> where T : IComparable<T>
+    public static class SortAlgo<T> where T : IComparable//<T>
     {
         /// <summary>
         /// Сортировка вставками
@@ -19,10 +19,10 @@ namespace Algo
         /// <param name="arr">Входной массив</param>
         public static void InsertionSort(T[] arr)
         {
-            for (int i = 1; i < arr.Length; ++i)
+            for (Int64 i = 1; i < arr.Length; ++i)
             {
                 T temp = arr[i];
-                int j = 0;
+                Int64 j = 0;
                 //Сдвигаем на один все элементы большие текущего
                 for (j = i - 1; j >= 0 && temp.CompareTo(arr[j]) < 0; --j)
                     arr[j + 1] = arr[j];
@@ -42,19 +42,17 @@ namespace Algo
         /// <param name="arr"></param>
         public static void SelectionSort(T[] arr)
         {
-            for (int i = 0; i < arr.Length - 1; ++i)
+            for (Int64 i = 0; i < arr.Length - 1; ++i)
             {
-                int minIndex = i;
+                Int64 minIndex = i;
                 //Ищем индекс минимального элемента
-                for (int j = i + 1; j < arr.Length; ++j)
+                for (Int64 j = i + 1; j < arr.Length; ++j)
                 {
                     if (arr[j].CompareTo(arr[minIndex])<0)
                         minIndex = j;
                 }
                 //Меняем местами
-                T temp = arr[i];
-                arr[i] = arr[minIndex];
-                arr[minIndex] = temp;
+                Swap(ref arr[i], ref arr[minIndex]);
             }
         }
 
@@ -77,13 +75,23 @@ namespace Algo
                 arr[heap.Size() - 1] = heap.PopMax();
             }
         }
-        
-        public static void MergeSort(T[] arr, int left, int right)
+
+        /// <summary>
+        /// Сортировка слиянием
+        /// </summary>
+        /// Худшее время  O(n log2 n)
+        /// Лучшее время  O(n log2 n)
+        /// Среднее время O(n log2 n)
+        /// Затраты памяти O(n) вспомогательных
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        public static void MergeSort(T[] arr, Int64 left, Int64 right)
         {
             if (left >= right)
                 return;
-            
-            int mid = left + (right - left) / 2;
+
+            Int64 mid = left + (right - left) / 2;
             MergeSort(arr, left, mid);
             MergeSort(arr, (mid + 1), right);
 
@@ -91,10 +99,17 @@ namespace Algo
             
         }
 
-        private static void Merge(T[] arr, int left, int mid, int right)
+        /// <summary>
+        /// Вспомогательный метод для сортировки слиянием, выполняет слияние двух массивов
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="mid"></param>
+        /// <param name="right"></param>
+        private static void Merge(T[] arr, Int64 left, Int64 mid, Int64 right)
         {
             T[] newArr = new T[right - left + 1];
-            int i = left, j = mid + 1;
+            Int64 i = left, j = mid + 1;
             while(i <= mid && j <= right)
             {
                 if (arr[i].CompareTo(arr[j]) < 0)
@@ -110,6 +125,20 @@ namespace Algo
                     newArr[i - left + j - (mid + 1)] = arr[j];
             for (i = left, j = 0; i <= right; ++i, ++j)
                 arr[i] = newArr[j];
+        }
+
+        
+
+        /// <summary>
+        /// Вспомогательный метод для обмена элементов местами
+        /// </summary>
+        /// <param name="elem1"></param>
+        /// <param name="elem2"></param>
+        private static void Swap(ref T elem1, ref T elem2)
+        {
+            T temp = elem1;
+            elem1 = elem2;
+            elem2 = temp;
         }
     }
 }

@@ -11,9 +11,14 @@ namespace Algo
     /// Бинарная куча
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    class Heap<T> where T : IComparable<T>
+    class Heap<T> where T : IComparable//<T>
     {
         private List<T> _arr;
+
+        public Heap()
+        {
+            _arr = new List<T>();
+        }
 
         public Heap(T[] arr)
         {
@@ -75,6 +80,12 @@ namespace Algo
             _arr.RemoveAt(_arr.Count - 1);
             SiftDown(0);
             return temp;
+        }
+
+        public void Insert(T element)
+        {
+            _arr.Add(element);
+            SiftUp(_arr.Count - 1);
         }
 
         public int Size()
