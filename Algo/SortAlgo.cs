@@ -127,7 +127,54 @@ namespace Algo
                 arr[i] = newArr[j];
         }
 
-        
+        /// <summary>
+        /// Быстрая сортировка
+        /// Не устойчива
+        /// Худшее время  O(n2)
+        /// Лучшее время  O(n log n) (обычное разделение) или O(n) (разделение на 3 части)
+        /// Среднее время O(n log n)
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        public static void QuickSort(T[] arr, Int64 left, Int64 right)
+        {
+            if(left < right && right-left<=3)
+                InsertionSort(arr, left, right);
+            else if (left < right)
+            {
+                Int64 part = Partition(arr, left, right);
+                QuickSort(arr, left, part);
+                QuickSort(arr, part+1, right);
+            }
+        }
+
+        /// <summary>
+        /// Вспомогательный метод для быстрой сортировки
+        /// </summary>
+        /// <param name="arr"></param>
+        /// <param name="left"></param>
+        /// <param name="right"></param>
+        /// <returns></returns>
+        private static Int64 Partition(T[] arr, Int64 left, Int64 right)
+        {
+            var median = new Tuple<T, Int64>[] { Tuple.Create(arr[left], left), Tuple.Create(arr[right], right), Tuple.Create(arr[left + (right - left) / 2],left + (right - left) / 2) }
+                .OrderBy(x => x).ToArray()[1];
+            T pivot = median.Item1;
+            Int64 i = left, j = right;
+            while (i<j)
+            {
+                for (; arr[i].CompareTo(pivot) < 0; ++i) ;
+                for (; arr[j].CompareTo(pivot) > 0; --j) ;
+                
+                if (i >= j)
+                    break;
+
+                Swap(ref arr[i++], ref arr[j--]);
+            }
+
+            return j;
+        }
 
         /// <summary>
         /// Вспомогательный метод для обмена элементов местами
